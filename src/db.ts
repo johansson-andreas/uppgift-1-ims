@@ -7,6 +7,6 @@ export default async function connectDB() {
     const URI = process.env.URI ||'No string ';
         console.log(URI)
     await mongoose.connect(URI, {
-        dbName: "EMS"
+        dbName: "IMS"
     })
 } 
