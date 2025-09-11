@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createProduct } from "./controllers/products";
+import { productController } from "../controllers/products";
 
 const router = Router();
 
@@ -11,7 +11,7 @@ const router = Router();
 // router.get('/products/critical-stock',);
 // router.get('/manufacturers',);
 // router.get('/products/:id',);
-router.post('/products', createProduct);
+router.post('/', productController.createProduct);
 // router.put('/products/:id',);
 // router.delete('/products/:id', );
 
