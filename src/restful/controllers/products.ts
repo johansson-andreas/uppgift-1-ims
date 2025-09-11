@@ -10,38 +10,67 @@ class ProductController {
         path: "manufacturer",
         populate: { path: "contact" },
       });
-      res.status(200).json({message:response});
+      res.status(200).json({ message: response });
     } catch (error) {}
   }
+
   async getOneProduct(req: Request, res: Response) {
     const id = req.query.id;
 
     const response = await Product.findById(id).populate({
-        path: "manufacturer",
-        populate: { path: "contact" },
-      });
-      res.status(200).json({message:response})
+      path: "manufacturer",
+      populate: { path: "contact" },
+    });
+    res.status(200).json({ message: response });
     try {
     } catch (error) {}
   }
+
   async getTotalStockValue(req: Request, res: Response) {
+    
     try {
+    const [totalStockValue] = await Product.aggregate([{ $match: {}}, {$group: {_id:null, totalStockValue: {$sum: {$multiply: ["$price", "$amountInStock"]}}}}])
+
+    res.status(200).json({message:`Total stock value: ${totalStockValue.totalStockValue}`})
+    
     } catch (error) {}
   }
   async getTotalStockValueBM(req: Request, res: Response) {
     try {
-    } catch (error) {}
+        
+        const totalStockValue = await Product.aggregate([{ $match: {}}, {$group: {_id: "$manufacturer", totalStockValue: {$sum: {$multiply: ["$price", "$amountInStock"]}}}}])
+        const mappedStockValue = await Promise.all(totalStockValue.map(async (manufacturer) => {
+            const manufacturerName = await Manufacturer.findById(manufacturer._id)
+            return {...manufacturer, name: manufacturerName!.name}
+        }))
+        res.status(200).json({message:mappedStockValue})
+        
+        } catch (error) {
+            console.log(error)
+        }
   }
-  async getCriticalStock(req: Request, res: Response) {
+
+  async getLowStock(req: Request, res: Response) {
     try {
+
+        const lowStock = await Product.aggregate([{$match: { "amountInStock": {$lt: 10}}}])
+
+        res.status(200).json({lowStock})
     } catch (error) {}
   }
+
+async getCriticalStock(req: Request, res: Response) {
+    try { 
+        const criticalStock = await Product.aggregate([{$match: { "amountInStock": {$lt: 5}}}, {$lookup: {from: "manufacturers", localField: "manufacturer", foreignField: "_id", as: "manufacturerInfo"}}, {$lookup: {from: "contacts", localField: "manufacturerInfo.contact", foreignField: "_id", as: "contactInfo"}}, {$project: {"name": 1, "sku": 1, "manufacturer": "$manufacturerInfo.name", "contactInfo.name": 1, "contactInfo.phone": 1, "contactInfo.email": 1}}])
+        res.status(200).json({message: criticalStock})
+    } catch (error) {
+        console.error(error)
+    }
+}
+
   async createProduct(req: Request, res: Response) {
     const { ProductInput, ManufacturerInput, ContactInput } = req.body;
-    // console.log(req.body)
-    // console.log('product', ProductInput)
     console.log("Manu", ManufacturerInput);
-    // console.log('Contact', ContactInput)
     try {
       const contactID = await Contact.create(ContactInput);
       console.log(contactID);
@@ -62,14 +91,23 @@ class ProductController {
     }
   }
   async updateProduct(req: Request, res: Response) {
+    const updatedProduct = req.body;
+    const id = req.query.id;
     try {
+      const response = await Product.findByIdAndUpdate(id, updatedProduct, {
+        new: true,
+      });
+
+      res.status(201).json({ message: response });
     } catch (error) {}
   }
   async deleteProduct(req: Request, res: Response) {
+    const id = req.query.id
     try {
+        await Product.findByIdAndDelete(id)
+        res.status(200).json({message: "Succesfully deleted"})
     } catch (error) {}
   }
 }
-
 
 export const productController = new ProductController();
