@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import router from './restful/routes';
 import  express  from "express";
 import dotenv from 'dotenv';
 import { ApolloServer } from "@apollo/server";
@@ -13,13 +13,14 @@ const app = express();
 app.use(express.json());
 
 // Start and connect Apollo server
-const server = new ApolloServer({typeDefs, resolvers})
-server.start().then(e => {
-    app.use("/graphql", expressMiddleware(server, {
-    context: async () => ({}),
-}))
+// const server = new ApolloServer({typeDefs, resolvers})
+// server.start().then(e => {
+//     app.use("/graphql", expressMiddleware(server, {
+//     context: async () => ({}),
+// }))
+// })
 
-})
+app.use('/api', router )
 
 // Connect to MongdoDB
 connectDB()
