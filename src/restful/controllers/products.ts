@@ -2,19 +2,25 @@ import { Express, Request, Response } from "express";
 import Contact from "../../models/Contact";
 import Manufacturer from "../../models/Manufacturer";
 import Product from "../../models/Product";
-import mongoose from "mongoose";
 
 class ProductController {
   async getProducts(req: Request, res: Response) {
     try {
-      Product.find().populate({
+      const response = await Product.find().populate({
         path: "manufacturer",
         populate: { path: "contact" },
       });
-      res.status(200).json({});
+      res.status(200).json({message:response});
     } catch (error) {}
   }
   async getOneProduct(req: Request, res: Response) {
+    const id = req.query.id;
+
+    const response = await Product.findById(id).populate({
+        path: "manufacturer",
+        populate: { path: "contact" },
+      });
+      res.status(200).json({message:response})
     try {
     } catch (error) {}
   }
