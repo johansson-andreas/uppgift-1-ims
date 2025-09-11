@@ -12,7 +12,7 @@ router.get('/critical-stock', productController.getCriticalStock);
 router.get('/:id',productController.getOneProduct);
 router.post('/', productController.createProduct);
 router.put('/:id', productController.updateProduct);
-// router.delete('/products/:id', );
+router.delete('/products/:id', productController.deleteProduct);
 
 
 export default router;
