@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, {InferSchemaType} from "mongoose";
 
 
 const ManufacturerSchema = new mongoose.Schema(
@@ -14,5 +14,6 @@ const ManufacturerSchema = new mongoose.Schema(
 
 
 const Manufacturer = mongoose.model('Manufacturer', ManufacturerSchema);
+export type ManufacturerType = InferSchemaType<typeof ManufacturerSchema>;
 
 export default Manufacturer;

@@ -15,12 +15,12 @@ const app = express();
 app.use(express.json());
 
 // Start and connect Apollo server
-// const server = new ApolloServer({typeDefs, resolvers})
-// server.start().then(e => {
-//     app.use("/graphql", expressMiddleware(server, {
-//     context: async () => ({}),
-// }))
-// })
+const server = new ApolloServer({typeDefs, resolvers})
+server.start().then(e => {
+    app.use("/graphql", expressMiddleware(server, {
+    context: async () => ({}),
+}))
+})
 
 app.use('/api/products', ProductRoutes)
 app.use('/api/manufacturers', ManufacturerRoutes)
