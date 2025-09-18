@@ -152,7 +152,7 @@ const resolvers = {
             }
 
         },
-        updateProduct: async (_p: any, {...input}: ProductTypePartial) => {
+        updateProduct: async (_p: any, {input}: {input: ProductTypePartial}) => {
         const {_id, ...product} = input;
         try {
             const response = await Product.findByIdAndUpdate(_id, product, {
