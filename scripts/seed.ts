@@ -53,6 +53,6 @@ const generateData = async () => {
     console.log(productResponse)
   }
 }
-connectDB("mongodb+srv://nevarix:Marsgrand9@questionscluster.h5tskl2.mongodb.net/?retryWrites=true&w=majority").then(() => {
+connectDB()).then(() => {
 generateData()
 })
