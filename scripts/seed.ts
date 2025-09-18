@@ -4,6 +4,9 @@ import Manufacturer from "../src/models/Manufacturer";
 import Product from "../src/models/Product";
 import mongoose, { connect } from "mongoose";
 import connectDB from "../src/db";
+import dotenv from "dotenv"
+import path from "path";
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 const createRandomContact = () => {
   return {
@@ -53,6 +56,7 @@ const generateData = async () => {
     console.log(productResponse)
   }
 }
-connectDB()).then(() => {
+console.log("URI:", process.env.URI)
+connectDB().then(() => {
 generateData()
 })
