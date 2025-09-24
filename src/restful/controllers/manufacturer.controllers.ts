@@ -8,7 +8,8 @@ class ManufacturerController {
  async getManufacturer(req: Request, res: Response)  {
 
     try {
-
+        const response = Manufacturer.find().populate("contact");
+        res.status(200).json(response)
     } catch ( error) {
 
     }

@@ -15,7 +15,7 @@ const typeDefs = /* GraphQL */ `
         website: String,
         description: String,
         address: String,
-        contact: ID
+        contact: Contact
     }
 
     type Product {
@@ -24,7 +24,7 @@ const typeDefs = /* GraphQL */ `
         description: String,
         price: Float,
         category: String,
-        manufacturer: ID,
+        manufacturer: Manufacturer,
         amountInStock: Int,
     }
     input ContactI {
@@ -53,7 +53,7 @@ const typeDefs = /* GraphQL */ `
     type TSVBM {
         _id: ID,
         name: String,
-        totalStockValue: Int,
+        totalStockValue: Float,
     }
 
     type TSV {

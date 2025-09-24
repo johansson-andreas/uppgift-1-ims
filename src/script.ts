@@ -1,11 +1,10 @@
-import router from './restful/routes/products';
+import router from './restful/routes/products.routes';
 import  express  from "express";
 import dotenv from 'dotenv';
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@as-integrations/express5";
 import connectDB from "./db";
-import ProductRoutes from "./restful/routes/products"
-import ManufacturerRoutes from "./restful/routes/manufacturers"
+import RestRoutes from "./restful/index"
 import resolvers from "./graphql/resolvers";
 import typeDefs from "./graphql/typeDefs";
 
@@ -22,8 +21,7 @@ server.start().then(e => {
 }))
 })
 
-app.use('/api/products', ProductRoutes)
-app.use('/api/manufacturers', ManufacturerRoutes)
+app.use('/api/', RestRoutes)
 
 // Connect to MongdoDB
 connectDB()
