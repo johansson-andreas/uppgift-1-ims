@@ -25,6 +25,7 @@ Run the seed script while in root to populate the database with fake users and t
 ```bash
 npx tsx scripts/seed.ts
 ```
+---
 
 ### 4. 🚀 Start the Server
 
